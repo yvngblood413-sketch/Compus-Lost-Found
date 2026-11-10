@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lost &amp; Found</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <!-- apply saved dark mode before the page paints -->
+  <script>if (localStorage.theme === 'dark') document.documentElement.dataset.theme = 'dark';</script>
+</head>
+<body>
+  <header>
+    <a class="logo" href="{{ url_for('index') }}">🔎 Lost &amp; Found</a>
+    <nav>
+      <a href="{{ url_for('index') }}">Browse</a>
+      {% if is_admin %}
+        <a href="{{ url_for('admin') }}">Dashboard</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+      {% else %}
+        <a href="{{ url_for('login') }}">Admin</a>
+      {% endif %}
+      <a href="#" onclick="toggleDark(); return false;" title="Dark mode">🌓</a>
+      <a class="btn" href="{{ url_for('add') }}">+ Report Item</a>
+    </nav>
+  </header>
+  <main>
+    {% with messages = get_flashed_messages() %}
+      {% for m in messages %}<div class="flash">{{ m }}</div>{% endfor %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer>Lost &amp; Found System · CIS Project</footer>
+  <script>
+    function toggleDark() {
+      const root = document.documentElement;
+      const dark = root.dataset.theme !== 'dark';
+      root.dataset.theme = dark ? 'dark' : 'light';
+      localStorage.theme = dark ? 'dark' : 'light';
+    }
+  </script>
+</body>
+</html>

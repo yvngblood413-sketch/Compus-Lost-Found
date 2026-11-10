@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Admin Dashboard</h2>
+
+<div class="stats">
+  <div class="stat"><b>{{ stats.total }}</b><span>Total reports</span></div>
+  <div class="stat"><b>{{ stats.lost }}</b><span>Open lost</span></div>
+  <div class="stat"><b>{{ stats.found }}</b><span>Open found</span></div>
+  <div class="stat"><b>{{ stats.returned }}</b><span>Returned</span></div>
+</div>
+
+<table class="table">
+  <tr>
+    <th>Title</th><th>Type</th><th>Category</th><th>Date</th><th>Contact</th><th>Status</th>
+  </tr>
+  {% for i in items %}
+  <tr>
+    <td><a href="{{ url_for('item', item_id=i.id) }}">{{ i.title }}</a></td>
+    <td>{{ i.type|upper }}</td>
+    <td>{{ i.category }}</td>
+    <td>{{ i.date_reported }}</td>
+    <td>{{ i.contact_name }} — {{ i.contact_info }}</td>
+    <td>{{ 'Returned' if i.resolved else 'Open' }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

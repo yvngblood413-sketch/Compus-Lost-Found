@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<form class="filters" method="get">
+  <input type="text" name="q" placeholder="Search title, description, location…" value="{{ q }}">
+  <select name="type">
+    <option value="">All</option>
+    <option value="lost" {{ 'selected' if t=='lost' }}>Lost</option>
+    <option value="found" {{ 'selected' if t=='found' }}>Found</option>
+  </select>
+  <label><input type="checkbox" name="resolved" value="1" {{ 'checked' if show_resolved }}> Show returned</label>
+  <button type="submit">Search</button>
+</form>
+
+{% if items %}
+<div class="grid">
+  {% for i in items %}
+  <a class="card" href="{{ url_for('item', item_id=i.id) }}">
+    {% if i.photo %}
+      <img class="thumb" src="{{ url_for('static', filename='uploads/' ~ i.photo) }}" alt="">
+    {% endif %}
+    <span class="badge {{ i.type }}">{{ i.type|upper }}</span>
+    <h3>{{ i.title }}</h3>
+    <p class="muted">{{ i.category }} · {{ i.location or 'Unknown location' }}</p>
+    <p class="muted">{{ i.date_reported }}</p>
+  </a>
+  {% endfor %}
+</div>
+{% else %}
+  <p class="empty">No items found.</p>
+{% endif %}
+{% endblock %}

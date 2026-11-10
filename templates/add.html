@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Report an Item</h2>
+<!-- enctype is required so the photo file can be uploaded -->
+<form class="form" method="post" enctype="multipart/form-data">
+  <label>I have…
+    <select name="type" required>
+      <option value="lost">Lost something</option>
+      <option value="found">Found something</option>
+    </select>
+  </label>
+  <label>Item name *<input type="text" name="title" required></label>
+  <label>Category
+    <select name="category_id">
+      {% for c in categories %}<option value="{{ c.id }}">{{ c.name }}</option>{% endfor %}
+    </select>
+  </label>
+  <label>Description<textarea name="description" rows="4" placeholder="Colour, brand, markings…"></textarea></label>
+  <label>Where?<input type="text" name="location" placeholder="e.g. Library, Room 12"></label>
+  <label>Photo (optional)<input type="file" name="photo" accept="image/*"></label>
+  <label>Your name *<input type="text" name="contact_name" required></label>
+  <label>Phone or email *<input type="text" name="contact_info" required></label>
+  <button type="submit">Submit</button>
+</form>
+{% endblock %}

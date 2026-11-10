@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="detail">
+  {% if item.photo %}
+    <img class="photo" src="{{ url_for('static', filename='uploads/' ~ item.photo) }}" alt="">
+  {% endif %}
+  <span class="badge {{ item.type }}">{{ item.type|upper }}</span>
+  {% if item.resolved %}<span class="badge done">RETURNED</span>{% endif %}
+  <h2>{{ item.title }}</h2>
+  <p>{{ item.description or 'No description.' }}</p>
+  <ul>
+    <li><b>Category:</b> {{ item.category }}</li>
+    <li><b>Location:</b> {{ item.location or '—' }}</li>
+    <li><b>Date:</b> {{ item.date_reported }}</li>
+    <li><b>Contact:</b> {{ item.contact_name }} — {{ item.contact_info }}</li>
+  </ul>
+  <div class="actions">
+    {% if is_admin %}
+      {% if not item.resolved %}
+      <form method="post" action="{{ url_for('resolve', item_id=item.id) }}"><button>Mark as returned</button></form>
+      {% endif %}
+      <form method="post" action="{{ url_for('delete', item_id=item.id) }}" onsubmit="return confirm('Delete this item?')">
+        <button class="danger">Delete</button>
+      </form>
+    {% endif %}
+    <a href="{{ url_for('index') }}">← Back</a>
+  </div>
+</div>
+
+{% if matches %}
+<h3>🔗 Possible matches</h3>
+<div class="grid">
+  {% for m in matches %}
+  <a class="card" href="{{ url_for('item', item_id=m.id) }}">
+    {% if m.photo %}<img class="thumb" src="{{ url_for('static', filename='uploads/' ~ m.photo) }}" alt="">{% endif %}
+    <span class="badge {{ m.type }}">{{ m.type|upper }}</span>
+    <h3>{{ m.title }}</h3>
+    <p class="muted">{{ m.location or 'Unknown location' }} · {{ m.date_reported }}</p>
+  </a>
+  {% endfor %}
+</div>
+{% endif %}
+{% endblock %}
