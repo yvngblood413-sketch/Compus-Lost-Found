@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, g, flash, 
 
 DB = "lostfound.db"
 UPLOADS = os.path.join("static", "uploads")
-ADMIN_PASSWORD = "admin123"        
+ADMIN_PASSWORD = "admin4747"        
 
 app = Flask(__name__)
 app.secret_key = "change-this-secret"
